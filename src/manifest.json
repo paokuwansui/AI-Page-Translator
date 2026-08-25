@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "LinguaFlow - AI 整页翻译",
+  "version": "0.1.0",
+  "description": "SSE 流式 AI 整页翻译:快翻+统一润色,自定义 API Key / Base URL / 模型(自动获取),兼容 Chrome / Edge / Firefox",
+  "permissions": ["storage"],
+  "host_permissions": ["<all_urls>"],
+  "background": { "service_worker": "background.js" },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "AI 页面翻译"
+  },
+  "options_ui": { "page": "options/options.html", "open_in_tab": true },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["lib/common.js", "content/chunker.js", "content/content.js"],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ],
+  "icons": { "16": "icons/icon16.png", "48": "icons/icon48.png", "128": "icons/icon128.png" },
+  "browser_specific_settings": {
+    "gecko": { "id": "ai-page-translator@local", "strict_min_version": "109.0" }
+  }
+}
