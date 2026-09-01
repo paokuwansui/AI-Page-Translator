@@ -63,5 +63,11 @@ document.addEventListener('DOMContentLoaded', () => {
   $('saveBtn').addEventListener('click', save);
   $('fetchModelsBtn').addEventListener('click', fetchModels);
   $('testBtn').addEventListener('click', testConn);
-  $('modelList').addEventListener('change', (e) => { $('model').value = e.target.value; });
+  // 选模型同步到输入框。change 只在选中值“变化”时触发——若点击的模型恰好是当前
+  // 选中项(如列表第一项被隐式选中)则无 change 事件,表现为“选不上”,故再挂
+  // click/focus 兜底:打开下拉或聚焦的瞬间即同步当前选中值,值未变也能选中。
+  const syncModel = (e) => { $('model').value = e.target.value; };
+  $('modelList').addEventListener('change', syncModel);
+  $('modelList').addEventListener('click', syncModel);
+  $('modelList').addEventListener('focus', syncModel);
 });
