@@ -1,0 +1,13 @@
+{
+  "name": "linguaflow",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI 整页翻译 + 网页阅读助手(浏览器扩展,零运行时依赖)",
+  "scripts": {
+    "test": "bash tests/run-all.sh",
+    "test:unit": "node --test tests/*.test.mjs",
+    "test:ui": "node tests/verify-ui.mjs && node tests/options-model-sync.mjs",
+    "build": "bash build.sh"
+  },
+  "engines": { "node": ">=18" }
+}
