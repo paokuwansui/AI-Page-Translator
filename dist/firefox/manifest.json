@@ -1,26 +1,86 @@
 {
   "manifest_version": 3,
-  "name": "LinguaFlow - AI 整页翻译",
+  "name": "AI-Page-Translator - 整页翻译与页面 AI 阅读助手",
   "version": "0.1.0",
-  "description": "SSE 流式 AI 整页翻译:快翻+统一润色,自定义 API Key / Base URL / 模型(自动获取),兼容 Chrome / Edge / Firefox",
-  "permissions": ["storage"],
-  "host_permissions": ["<all_urls>"],
-  "background": { "service_worker": "background.js" },
+  "description": "整页翻译、图片文字翻译,以及页面 AI 阅读助手(读页面内容、答疑、截图翻译)—— 兼容任意 OpenAI 兼容接口",
+  "permissions": [
+    "storage",
+    "contextMenus",
+    "unlimitedStorage"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
   "action": {
     "default_popup": "popup/popup.html",
     "default_title": "AI 页面翻译"
   },
-  "options_ui": { "page": "options/options.html", "open_in_tab": true },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  },
+  "commands": {
+    "translate-page": {
+      "suggested_key": {
+        "default": "Alt+Shift+T"
+      },
+      "description": "翻译当前页面"
+    },
+    "toggle-chat": {
+      "suggested_key": {
+        "default": "Alt+Shift+A"
+      },
+      "description": "打开/关闭 AI 阅读助手"
+    },
+    "translate-images": {
+      "suggested_key": {
+        "default": "Alt+Shift+I"
+      },
+      "description": "翻译本页图片文字"
+    }
+  },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["lib/common.js", "content/chunker.js", "content/content.js"],
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "lib/common.js",
+        "lib/pool.js",
+        "lib/cache.js",
+        "lib/markdown.js",
+        "img/collect.js",
+        "img/engine.js",
+        "img/render.js",
+        "content/chunker.js",
+        "content/reader.js",
+        "content/rag.js",
+        "panel/core.js",
+        "panel/inpage.js",
+        "content/content.js"
+      ],
       "run_at": "document_idle",
-      "all_frames": true
+      "all_frames": true,
+      "match_about_blank": true,
+      "match_origin_as_fallback": true
     }
   ],
-  "icons": { "16": "icons/icon16.png", "48": "icons/icon48.png", "128": "icons/icon128.png" },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  },
   "browser_specific_settings": {
-    "gecko": { "id": "ai-page-translator@local", "strict_min_version": "109.0" }
-  }
+    "gecko": {
+      "id": "ai-page-translator@local",
+      "strict_min_version": "109.0"
+    }
+  },
+  "version_name": "20260917-0344"
 }

@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>LinguaFlow - 设置</title>
+  <title>AI-Page-Translator - 设置</title>
   <link rel="stylesheet" href="options.css">
 </head>
 <body>
@@ -11,8 +11,8 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
     </span>
     <div>
-      <h1>LinguaFlow</h1>
-      <p class="sub">配置 OpenAI 兼容 API,一键整页翻译</p>
+      <h1>AI-Page-Translator</h1>
+      <p class="sub">整页翻译、图片文字翻译,以及页面 AI 阅读助手(读页面内容、答疑、截图翻译)—— 兼容任意 OpenAI 兼容接口</p>
     </div>
   </header>
 
@@ -58,7 +58,89 @@
     </div>
     <div class="grid2">
       <div class="row"><label for="chunkSize">每请求字符</label><input id="chunkSize" type="number" min="200" step="100"></div>
-      <div class="row"><label for="concurrency">并发请求数</label><input id="concurrency" type="number" min="1" max="8"></div>
+      <div class="row"><label for="concurrency">并发请求数</label><input id="concurrency" type="number" min="1" max="50"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      性能与缓存
+    </h2>
+    <div class="grid2">
+      <div class="row"><label for="rateLimit">限速请求数</label><input id="rateLimit" type="number" min="1" max="60"></div>
+      <div class="row"><label for="rateInterval">限速窗口(ms)</label><input id="rateInterval" type="number" min="100" step="100"></div>
+    </div>
+    <div class="grid2">
+      <div class="row"><label for="batchSize">批聚合段数</label><input id="batchSize" type="number" min="1" max="100"></div>
+      <div class="row"><label for="batchLength">批聚合字符</label><input id="batchLength" type="number" min="500" step="500"></div>
+    </div>
+    <div class="grid2">
+      <div class="row"><label for="batchInterval">批等待(ms)</label><input id="batchInterval" type="number" min="0" step="50"></div>
+      <div class="row"><label for="deferIdle">延迟兜底(ms)</label><input id="deferIdle" type="number" min="0" step="500"></div>
+    </div>
+    <div class="grid2">
+      <div class="row"><label for="polishBatchBlocks">润色批段数</label><input id="polishBatchBlocks" type="number" min="1" max="40"></div>
+      <div class="row"><label for="cacheMax">缓存条数上限</label><input id="cacheMax" type="number" min="100" step="100"></div>
+    </div>
+    <label class="switch-row" for="viewportFirst">
+      <input id="viewportFirst" type="checkbox">
+      <span class="switch" aria-hidden="true"></span>
+      <span class="switch-text">视口优先(首屏先翻,滚动到哪翻到哪)</span>
+    </label>
+    <label class="switch-row" for="useCache">
+      <input id="useCache" type="checkbox">
+      <span class="switch" aria-hidden="true"></span>
+      <span class="switch-text">使用翻译缓存(重复段落/重复访问零请求)</span>
+    </label>
+    <label class="switch-row" for="termPreAnalyze">
+      <input id="termPreAnalyze" type="checkbox">
+      <span class="switch" aria-hidden="true"></span>
+      <span class="switch-text">术语/风格预分析(首次访问多 1 次小请求,强烈建议开)</span>
+    </label>
+    <label class="switch-row" for="polishPipelined">
+      <input id="polishPipelined" type="checkbox">
+      <span class="switch" aria-hidden="true"></span>
+      <span class="switch-text">流水线润色(与快翻重叠执行,总耗时≈1.2 轮;关掉=翻完再统一润色)</span>
+    </label>
+    <label class="switch-row" for="polishAvoidReading">
+      <input id="polishAvoidReading" type="checkbox">
+      <span class="switch" aria-hidden="true"></span>
+      <span class="switch-text">润色避让正在阅读的段落(防止文字跳动)</span>
+    </label>
+    <label class="switch-row" for="retryWholeChunk">
+      <input id="retryWholeChunk" type="checkbox">
+      <span class="switch" aria-hidden="true"></span>
+      <span class="switch-text">缺失段整块重试(模型偶发丢格式时自动补齐)</span>
+    </label>
+    <label class="switch-row" for="repeatPattern">
+      <input id="repeatPattern" type="checkbox">
+      <span class="switch" aria-hidden="true"></span>
+      <span class="switch-text">同构重复块相邻(列表/卡片措辞一致)</span>
+    </label>
+    <label class="switch-row" for="translateAttrs">
+      <input id="translateAttrs" type="checkbox">
+      <span class="switch" aria-hidden="true"></span>
+      <span class="switch-text">翻译属性文本(placeholder / title / alt / aria-label)</span>
+    </label>
+    <label class="switch-row" for="translateShadow">
+      <input id="translateShadow" type="checkbox">
+      <span class="switch" aria-hidden="true"></span>
+      <span class="switch-text">翻译影子 DOM 内容(Web Components 站点)</span>
+    </label>
+    <label class="switch-row" for="translateHidden">
+      <input id="translateHidden" type="checkbox">
+      <span class="switch" aria-hidden="true"></span>
+      <span class="switch-text">翻译隐藏内容(折叠菜单/懒加载,曝光即已译文)</span>
+    </label>
+    <label class="switch-row" for="splitLongText">
+      <input id="splitLongText" type="checkbox">
+      <span class="switch" aria-hidden="true"></span>
+      <span class="switch-text">超长段落按句切分(避免单次请求被截断)</span>
+    </label>
+    <div class="actions">
+      <button id="recommendBtn" class="btn" type="button">应用推荐配置</button>
+      <span class="hint">推荐:并发 12 · 限速 8/1200ms · 批 20 段/8000 字符 · 视口优先 · 缓存 · 术语先行 · 流水线润色</span>
     </div>
   </section>
 
@@ -84,13 +166,108 @@
     </label>
   </section>
 
+  <section class="card">
+    <h2>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-4.5-4.5L7 20"/></svg>
+      图片翻译
+    </h2>
+    <div class="row">
+      <label for="visionModel">视觉模型</label>
+      <div class="modelbox">
+        <input id="visionModel" type="text" list="visionModels" placeholder="留空则用上面的模型,需支持图片输入" spellcheck="false">
+        <button id="probeVisionBtn" class="btn" type="button" title="真发一张小图问模型:能不能识别图片(不按模型名猜)">测试能否识别图片</button>
+      </div>
+      <datalist id="visionModels"></datalist>
+      <div id="visionProbe" class="hint"></div>
+    </div>
+    <div class="grid2">
+      <div class="row"><label for="imageMaxPerPage">每页图片上限</label><input id="imageMaxPerPage" type="number" min="1" max="30"></div>
+      <div class="row"><label for="imageMinSize">最小尺寸(px)</label><input id="imageMinSize" type="number" min="40" step="10"></div>
+    </div>
+    <div class="grid2">
+      <div class="row"><label for="imageMaxDimOcr">识别最长边(px)</label><input id="imageMaxDimOcr" type="number" min="512" step="64"></div>
+      <div class="row"><label for="imagePaintMode">底色处理</label><select id="imagePaintMode">
+        <option value="auto">自动(纯色底擦字,照片用半透明覆盖)</option>
+        <option value="fill">总是擦字填充</option>
+        <option value="cover">总是半透明覆盖</option>
+      </select></div>
+    </div>
+    <div class="grid2">
+      <div class="row"><label for="bgScanMax">背景图扫描上限(元素数)</label><input id="bgScanMax" type="number" min="200" step="500"></div>
+      <div class="row"><label for="imageDedupeSameSrc">同图只翻第一处</label><select id="imageDedupeSameSrc">
+        <option value="0">否(每处都翻,共用缓存不额外花钱)</option>
+        <option value="1">是(同一张图只翻第一处)</option>
+      </select></div>
+    </div>
+    <label class="switch-row" for="imageTranslateEnabled">
+      <input id="imageTranslateEnabled" type="checkbox">
+      <span class="switch" aria-hidden="true"></span>
+      <span class="switch-text">启用图片文字翻译</span>
+    </label>
+    <label class="switch-row" for="imageAutoTranslate">
+      <input id="imageAutoTranslate" type="checkbox">
+      <span class="switch" aria-hidden="true"></span>
+      <span class="switch-text">页面翻译时自动翻译视口内图片(默认手动,避免额外额度)</span>
+    </label>
+    <div class="hint" style="text-align:left;margin-top:8px">图片文字翻译依赖视觉模型:模型不支持图片输入时会整页跳过并提示,不会逐张重试。识别结果会缓存,二次访问零消耗。</div>
+  </section>
+
+  <section class="card">
+    <h2>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      阅读与对话
+    </h2>
+    <div class="row">
+      <label for="chatModel">对话模型</label>
+      <input id="chatModel" type="text" placeholder="留空则用上面的模型" spellcheck="false">
+    </div>
+    <div class="grid2">
+      <div class="row"><label for="chatMaxContext">上下文预算(字符)</label><input id="chatMaxContext" type="number" min="1000" step="1000"></div>
+      <div class="row"><label for="chatTopK">引用片段数 K</label><input id="chatTopK" type="number" min="1" max="30"></div>
+    </div>
+    <div class="grid2">
+      <div class="row"><label for="chatHistoryTurns">历史轮数</label><input id="chatHistoryTurns" type="number" min="1" max="50"></div>
+      <div class="row"><label for="imageMaxCount">对话附图上限</label><input id="imageMaxCount" type="number" min="1" max="8"></div>
+    </div>
+    <div class="row">
+      <label for="panelMode">面板形态</label>
+      <select id="panelMode">
+        <option value="auto">自动(Chrome 原生侧栏优先,不可用则页内面板)</option>
+        <option value="inpage">只用页内面板(全平台一致)</option>
+        <option value="sidepanel">只用原生侧栏</option>
+      </select>
+    </div>
+    <div class="row">
+      <label for="systemPromptExtra">附加系统提示</label>
+      <input id="systemPromptExtra" type="text" placeholder="例如:回答尽量用表格 / 保留英文术语" spellcheck="false">
+    </div>
+    <label class="switch-row" for="chatEnabled">
+      <input id="chatEnabled" type="checkbox">
+      <span class="switch" aria-hidden="true"></span>
+      <span class="switch-text">启用页内 AI 阅读助手(右下角悬浮入口)</span>
+    </label>
+    <label class="switch-row" for="renderMarkdown">
+      <input id="renderMarkdown" type="checkbox">
+      <span class="switch" aria-hidden="true"></span>
+      <span class="switch-text">AI 回复渲染 Markdown(关闭则显示原始纯文本;面板里也有快捷开关)</span>
+    </label>
+    <label class="switch-row" for="chatPersist">
+      <input id="chatPersist" type="checkbox">
+      <span class="switch" aria-hidden="true"></span>
+      <span class="switch-text">按网址保存对话记录(仅存本地,便于回看笔记)</span>
+    </label>
+    <div class="hint" style="text-align:left;margin-top:8px">页面正文/大纲/图片会作为上下文发送到你配置的 Base URL;涉及敏感页面请先关闭助手。</div>
+  </section>
+
   <div class="actions">
     <button id="testBtn" class="btn" type="button">测试连接</button>
     <button id="saveBtn" class="btn primary" type="button">保存设置</button>
   </div>
   <div id="status" class="status"></div>
+  <div id="buildInfo" class="hint" style="text-align:center;margin-top:14px;opacity:.7"></div>
 
   <script src="../lib/common.js"></script>
+  <script src="../img/engine.js"></script>
   <script src="options.js"></script>
 </body>
 </html>

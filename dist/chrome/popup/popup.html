@@ -10,8 +10,8 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
     </span>
     <div class="head-text">
-      <div class="title">LinguaFlow</div>
-      <div class="sub">OpenAI 兼容 · 整页翻译</div>
+      <div class="title">AI-Page-Translator</div>
+      <div class="sub">整页翻译 · 图片文字翻译 · 页面 AI 阅读助手</div>
     </div>
   </header>
 
@@ -30,6 +30,38 @@
       停止
     </button>
   </div>
+
+  <div class="btn-row">
+    <button id="imgBtn" class="btn" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-4.5-4.5L7 20"/></svg>
+      翻译图片
+    </button>
+    <button id="imgResetBtn" class="btn" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v6h6"/><path d="M3.5 9a9 9 0 1 0 2.6-4.6"/></svg>
+      还原图片
+    </button>
+  </div>
+
+  <button id="chatBtn" class="btn primary" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    AI 对话 · 读这一页
+  </button>
+
+  <div class="btn-row">
+    <button id="chatSumBtn" class="btn" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16"/><path d="M4 12h10"/><path d="M4 18h7"/></svg>
+      总结此页
+    </button>
+    <button id="chatShotBtn" class="btn" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+      截图翻译
+    </button>
+  </div>
+
+  <button id="retryBtn" class="btn warn" type="button" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+    重试未翻译段落
+  </button>
 
   <div class="field">
     <label for="targetLang">目标语言</label>

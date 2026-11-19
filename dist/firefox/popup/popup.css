@@ -67,6 +67,15 @@ svg { display: block; }
   box-shadow: 0 2px 10px rgba(37, 99, 235, .4);
 }
 .btn.primary:hover { background: linear-gradient(135deg, #3b82f6, var(--primary)); }
+.btn.warn {
+  width: 100%; margin: 2px 0 6px;
+  border-color: #f59e0b; color: #b45309; background: #fffbeb;
+}
+.btn.warn:hover { background: #fef3c7; border-color: #d97706; }
+@media (prefers-color-scheme: dark) {
+  .btn.warn { background: #422006; color: #fbbf24; border-color: #92400e; }
+  .btn.warn:hover { background: #4d2607; }
+}
 
 .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0 6px; }
 .btn-row .btn { width: 100%; padding: 8px 6px; margin: 0; font-size: 12.5px; }

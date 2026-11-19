@@ -66,10 +66,10 @@ svg { display: block; }
 .card h2 svg { width: 15px; height: 15px; color: var(--primary); }
 
 /* 表单行 */
-.row { display: flex; align-items: center; gap: 12px; margin: 13px 0; }
+.row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 13px 0; min-width: 0; }
 .row > label { width: 108px; flex-shrink: 0; font-size: 13px; color: var(--muted); font-weight: 500; }
 .row input[type="text"], .row input[type="password"], .row input[type="number"], .row select {
-  flex: 1; min-width: 0;
+  flex: 1 1 160px; min-width: 0; max-width: 100%;
   padding: 9px 12px;
   border: 1px solid var(--border); border-radius: 9px;
   background: var(--card); color: var(--text);
@@ -86,13 +86,23 @@ svg { display: block; }
   background-repeat: no-repeat; background-position: right 10px center;
   padding-right: 30px;
 }
-.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 18px; }
-.grid2 .row > label { width: 84px; }
+.grid2 {
+  display: grid; gap: 0 18px;
+  /* ⚠️ 必须是 minmax(0,1fr):裸 1fr = minmax(auto,1fr),不会缩到内容最小宽度以下,
+     长文字的下拉框/数字框会把整行撑出容器右边界(用户报"后面的按钮超出了最右侧边框") */
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+.grid2 .row > label { width: 84px; flex-shrink: 0; }
 
-.modelbox { display: flex; flex: 1; min-width: 0; gap: 8px; }
-.modelbox input { flex: 1; min-width: 0; }
+.modelbox { display: flex; flex-wrap: wrap; flex: 1 1 240px; min-width: 0; gap: 8px; }
+/* 输入框要给足宽度:①旁边有"测试能否识别图片"按钮 ②通用 .row input 规则(0,2,1)比 .modelbox input(0,1,1)
+   更具体,会把 flex-basis 压到 160px → 这里用 #visionModel 提高优先级 */
+#visionModel { flex: 1 1 240px; min-width: 0; max-width: 100%; }
+.modelbox .btn { flex: 0 0 auto; }
+/* 探测结果必须**单独占一行**:它曾作为 flex 子项与输入框抢宽(长文本+URL 把输入框挤到 97px —— 用户反馈) */
+.row > .hint, #visionProbe { flex: 1 1 100%; width: 100%; overflow-wrap: anywhere; }
 #modelList {
-  width: 100%; margin-top: 4px; padding: 9px 12px;
+  width: 100%; max-width: 100%; margin-top: 4px; padding: 9px 12px;
   border: 1px solid var(--border); border-radius: 9px;
   background: var(--card); color: var(--text); font-size: 13px; font-family: inherit;
 }
@@ -118,7 +128,8 @@ svg { display: block; }
 .btn.primary:hover { background: linear-gradient(135deg, #3b82f6, var(--primary)); }
 
 /* 底部操作 + 状态 */
-.actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px; }
+.actions { display: flex; justify-content: flex-end; align-items: center; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+.hint { color: var(--muted); font-size: 12px; line-height: 1.5; flex: 1 1 220px; text-align: right; }
 .status {
   margin-top: 14px; text-align: right;
   color: var(--muted); font-size: 12.5px;
